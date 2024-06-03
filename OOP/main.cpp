@@ -1,6 +1,8 @@
 #include "Aligment.hpp"
+#include "Declaration_Definition.hpp"
 #include "Initialization.hpp"
-#include "Diamond_Inheritance.hpp"
+#include "Inheritance.hpp"
+#include "Interview.hpp"
 #include "Overload_Resolution.hpp"
 #include "Virtual.hpp"
 
@@ -11,11 +13,153 @@
  Сайты: https://learn.microsoft.com/ru-ru/cpp/cpp/initializers?view=msvc-170
         https://habr.com/ru/companies/jugru/articles/469465/
         https://ru.stackoverflow.com/questions/616184/%D0%9A%D0%B0%D0%BA-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-alignas
+ 
+  Declaration and definition:
+  Лекция: https://www.youtube.com/watch?v=c7CasTJKw7o&list=PLlb7e2G7aSpTFea2FYxp7mFfbZW-xavhL&index=11&ab_channel=ComputerScienceCenter
+  Сайты: https://habr.com/ru/companies/otus/articles/432834/
+         https://habr.com/ru/companies/jugru/articles/506104/
  */
+
+namespace declaration_definition // Объявление
+{
+    void print(); // без объявления нельзя будет вызвать функцию
+
+    inline void print_number() // в каждой единице трансляции (.cpp) должен быть свой inline
+    {
+        std::cout << "number" << std::endl;
+    }
+}
 
 
 int main()
 {
+    /*
+     Числа с плавающей точкой: сравнение должно быть в определенном диапазоне, а само число должно быть взято по модулю.
+     */
+    {
+        double number = 2.0;
+        if (number <= 2.1 && number >= 1.9)
+        {
+            std::cout << "number = 2.0" << std::endl;
+        }
+    }
+    /*
+     Массивы
+     */
+    {
+        /// Можно поменять индексы и имя массива местами.
+        {
+            int mas[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+            auto compare = mas[0] == *(mas + 0) == *(0 + mas) == 0[mas]; // одинаковый доступ к 0 элементу
+            int number = 3[mas - 1] - mas[3] + (mas - 1)[5]; // mas[2] - mas[3] + (mas[5] - 1) = 3 - 4 + (6 - 1) = 4
+        }
+        /// Арифметика указателей
+        {
+            char mas[] = {1,1,1,1, 1,1,1,1, 1,1,1,1};
+            *((int*)mas + 2) = 0; // int = 4 байта => 4 * 2 = 8, зануляем последние 4 байта, начиная с 8 элемента
+            for (int i = 0, I = sizeof(mas)/sizeof(mas[0]); i < I; ++i)
+                std::cout << (int)mas[i] << ",";
+            std::cout << std::endl;
+        }
+    }
+    /*
+     Переполнение безнакового числа: Бесконечный цикл
+     */
+    {
+        // 1 Пример
+        {
+            bool overflow = false;
+            for (uint8_t i = 0; i < 256; ++i)
+            {
+                if (i == 255)
+                    overflow = true;
+                else if (i == 1 && overflow)
+                    break;
+                std::cout << "Число: " << (int)i << std::endl;
+            }
+        }
+        // 2 Пример
+        {
+            unsigned char count = 128; // 1000 0000 = 2^7 = 128
+            
+            // Цикл не начинается: приведение типа к unsigned char
+            {
+                [[maybe_unused]] auto offset = (unsigned char) (count << 1); // // 0000 0000 = 0
+                for (unsigned char i = 0; i < (unsigned char) (count << 1); ++i) // 0 < 0
+                    std::cout << "Число: " << (int)i << std::endl;
+            }
+            // Бесконечный цикл: : приведение типа к int
+            {
+                bool overflow = false;
+                [[maybe_unused]] auto offset = (count << 1); // // 1 0000 0000 = 2^8 = 256
+                for (unsigned char i = 0; i < (count << 1); ++i) // 0 < 0
+                {
+                    if (i == 255)
+                        overflow = true;
+                    else if (i == 1 && overflow)
+                        break;
+                    std::cout << "Число: " << (int)i << std::endl;
+                }
+            }
+        }
+    }
+    /*
+     Указатели. Отличие указателя от константного указателя: если const находится слева от * - это указатель на константу, если const находится справа от * - это константный указатель. Если const находится слева и справа от * - это константный указатель на константную переменную.
+     */
+    {
+        int value = 1;
+        
+        /// Указатель на константу: можно менять только указатель. Оба варианта идентичны:
+        {
+            const int* const_int_ptr = &value;
+            int const* int_const_ptr = &value;
+            
+            // *const_int_ptr = 10; // Ошибка: Read-only variable is not assignable
+            const_int_ptr = nullptr;
+            
+            // *int_const_ptr = 10; // Ошибка: Read-only variable is not assignable
+            int_const_ptr = nullptr;
+        }
+        /// Константные указатели. Оба варианта НЕидентичны:
+        {
+            /// Константный указатель на переменную:
+            {
+                int* const int_ptr_const = &value;
+                
+                *int_ptr_const = 10;
+                // int_ptr_const = nullptr; // Ошибка: Cannot assign to variable with const-qualified type 'int *const'
+            }
+            /// Константный указатель на константную переменную:
+            {
+                [[maybe_unused]] const int* const const_int_ptr_const = &value;
+                
+                // *int_ptr_const = 10; // Ошибка: Read-only variable is not assignable
+                // int_ptr_const = nullptr; // Ошибка: Cannot assign to variable with const-qualified type 'int *const'
+            }
+        }
+    }
+    /*
+     Объявлений может быть много в разных единицах трансляциях (.cpp), но определение должно быть только одно, иначе будет переопределение (redefinition). Лучше объявление выносить в заголовочный файл (.h).
+     */
+    {
+        std::cout << "internal linkage" << std::endl;
+        std::cout << "static number1: " << &internal_linkage::number1 << std::endl;
+        std::cout << "const number2: " << &internal_linkage::number2 << std::endl;
+        std::cout << "constexpr number3: " << &internal_linkage::number3 << std::endl;
+        internal_linkage::print();
+        std::cout << std::endl;
+        
+        std::cout << "external linkage" << std::endl;
+        std::cout << "extern number1: " << &external_linkage::number1 << std::endl;
+        std::cout << "inline number2: " << &external_linkage::number2 << std::endl;
+        std::cout << "static constexpr number: " << &external_linkage::Number::number << std::endl;
+        external_linkage::print();
+        std::cout << std::endl;
+        
+        declaration_definition::print();
+        declaration_definition::print_number();
+    }
+    
     // virtual
     {
         Virtual::start();
@@ -194,17 +338,25 @@ int main()
     }
     // Порядок инициализации членов класса зависит от порядка их объявления, а не от порядка их в конструкторе!!!
     {
-        initialization_order::start();
+        initialization::start();
     }
     std::cout << std::endl;
     // Обычное наследование
     {
+        /*
+         Общая таблица спецификаторов доступа и типов наследования:
+         В родительском классе | public в дочернем классе | private в дочернем классе | protected в дочернем классе
+         public                | public                   | private                   | protected
+         private               | Недоступен               | Недоступен                | Недоступен
+         protected             | protected                | private                   | protected
+         */
+        
         inheritance::start();
     }
     std::cout << std::endl;
-    // Ромбовидное наследование
+    // Наследование
     {
-        diamond_inheritance::start();
+        inheritance::start();
     }
     /*
      Выравнивание памяти (aligment) - необходимо для эффективного обращения процессора к данным в памяти. 
@@ -212,5 +364,10 @@ int main()
      */
     {
         aligment::start();
+    }
+    std::cout << std::endl;
+    // Задачи в интервью
+    {
+        interview::start();
     }
 }

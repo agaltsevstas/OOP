@@ -18,10 +18,16 @@
     <ClCompile Include="Aligment.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Diamond_Inheritance.cpp">
+    <ClCompile Include="Declaration_Definition.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Inheritance.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Initialization.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Interview.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -36,19 +42,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aligment.hpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Diamond_Inheritance.hpp">
-      <Filter>Исходные файлы</Filter>
+    <ClInclude Include="Declaration_Definition.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Inheritance.hpp">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Initialization.hpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Interview.hpp">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Overload_Resolution.hpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Virtual.hpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,82 +2,129 @@
 
 #include <iostream>
 
-namespace no_virtual_method
+/*
+ Сайты: https://forum.shelek.ru/index.php/topic,9064.0.html
+        https://habr.com/ru/articles/64280/
+ */
+
+namespace print
 {
-    struct Base
+    namespace no_virtual_method
     {
-        Base()
+        struct Base
         {
-            print();
-        }
-        
-        void print()
-        {
-            std::cout << "Base::print" << std::endl;
-        }
-        
-        ~Base()
-        {
-            print();
-        }
-    };
+            Base()
+            {
+                print();
+            }
+            
+            void print()
+            {
+                std::cout << "Base::print" << std::endl;
+            }
+            
+            ~Base()
+            {
+                print();
+            }
+        };
 
-    struct Derived : Base
-    {
-        Derived() : Base()
+        struct Derived : Base
         {
-            print(); // virtual не работает в конструкторе
-        }
-        
-        virtual void print()
-        {
-            std::cout << "Derived::print" << std::endl;
-        }
-        
-        ~Derived()
-        {
-            print(); // virtual не работает в деструкторе
-        }
-    };
-}
+            Derived() : Base()
+            {
+                print(); // virtual не работает в конструкторе
+            }
+            
+            virtual void print()
+            {
+                std::cout << "Derived::print" << std::endl;
+            }
+            
+            ~Derived()
+            {
+                print(); // virtual не работает в деструкторе
+            }
+        };
+    }
 
-namespace virtual_method
-{
-    struct Base
+    namespace virtual_method
     {
-        Base()
+        struct Base
         {
-            print(); // virtual не работает в конструкторе
-        }
-        
-        virtual void print()
-        {
-            std::cout << "Base::print" << std::endl;
-        }
-        
-        ~Base() // virtual destructor!!!
-        {
-            print(); // virtual не работает в деструкторе
-        }
-    };
+            Base()
+            {
+                print(); // virtual не работает в конструкторе
+            }
+            
+            virtual void print()
+            {
+                std::cout << "Base::print" << std::endl;
+            }
+            
+            ~Base() // need virtual destructor!!!
+            {
+                print(); // virtual не работает в деструкторе
+            }
+        };
 
-    struct Derived : Base
+        struct Derived : Base
+        {
+            Derived() : Base()
+            {
+                print(); // virtual не работает в конструкторе
+            }
+            
+            virtual void print()
+            {
+                std::cout << "Derived::print" << std::endl;
+            }
+            
+            ~Derived()
+            {
+                print(); // virtual не работает в деструкторе
+            }
+        };
+    }
+
+    namespace virtual_destructor
     {
-        Derived() : Base()
+        struct Base
         {
-            print(); // virtual не работает в конструкторе
-        }
-        
-        virtual void print()
+            Base()
+            {
+                print();
+            }
+            
+            virtual void print()
+            {
+                std::cout << "Base::print" << std::endl;
+            }
+            
+            virtual ~Base()
+            {
+                print();
+            }
+        };
+
+        struct Derived : Base
         {
-            std::cout << "Derived::print" << std::endl;
-        }
-        
-        ~Derived()
-        {
-            print(); // virtual не работает в деструкторе
-        }
-    };
+            Derived() : Base()
+            {
+                print(); // virtual не работает в конструкторе
+            }
+            
+            void print() override
+            {
+                std::cout << "Derived::print" << std::endl;
+            }
+            
+            ~Derived()
+            {
+                print(); // virtual не работает в деструкторе
+            }
+        };
+    }
 }
 
 namespace non_virtual_interface
@@ -141,9 +188,9 @@ namespace no_virtual_destructor
             std::cout << "Base::print" << std::endl;
         }
         
-        ~Base() // virtual destructor!!!
+        ~Base() // need virtual destructor!!!
         {
-            print(); // virtual не работает в деструкторе
+            std::cout << "~Base" << std::endl;
         }
     };
 
@@ -154,14 +201,44 @@ namespace no_virtual_destructor
             print(); // virtual не работает в конструкторе
         }
         
-        virtual void print()
+        void print() override
         {
             std::cout << "Derived::print" << std::endl;
         }
         
         ~Derived() // деструктор не вызовется
         {
-            print(); // virtual не работает в деструкторе
+            std::cout << "~Derived" << std::endl;
+        }
+    };
+}
+
+namespace no_virtual_destructor_inheritance
+{
+    struct A
+    {
+        int a = 0; // Обязательно для примера, чтобы была ошибка при delete!
+        ~A()
+        {
+            std::cout << " ~A" << std::endl;
+        }
+    };
+
+    struct B
+    {
+        int b = 0; // Обязательно для примера, чтобы была ошибка при delete!
+        ~B()
+        {
+            std::cout << " ~B" << std::endl;
+        }
+    };
+
+    struct C : public A, public B
+    {
+        int c = 0;
+        ~C()
+        {
+            std::cout << " ~C" << std::endl;
         }
     };
 }
@@ -170,10 +247,7 @@ namespace virtual_destructor
 {
     struct Base
     {
-        Base()
-        {
-            print(); // virtual не работает в конструкторе
-        }
+        Base() = default;
         
         virtual void print()
         {
@@ -182,28 +256,26 @@ namespace virtual_destructor
         
         virtual ~Base()
         {
-            print(); // virtual не работает в деструкторе
+            std::cout << "~Base" << std::endl;
         }
     };
 
     struct Derived : Base
     {
-        Derived() : Base()
-        {
-            print(); // virtual не работает в конструкторе
-        }
+        Derived() = default;
         
-        void print()
+        void print() override
         {
             std::cout << "Derived::print" << std::endl;
         }
         
         ~Derived()
         {
-            print(); // virtual не работает в деструкторе
+            std::cout << "~Derived" << std::endl;
         }
     };
 }
+
 
 namespace Virtual
 {
@@ -216,42 +288,128 @@ namespace Virtual
          Деструктор: в момент уничтожения объекта базового класса, объект производного класса уже уничтожен, поэтому вызов виртуальной функции невозможен.
          */
         {
-            // 1 Способ: no virtual method
+            // print
             {
-                using namespace no_virtual_method;
-                std::cout << "no virtual method" << std::endl;
+                std::cout << "print" << std::endl;
                 
-                Derived derived;
-                Base& base = derived;
-                base.print();
-                
-                /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
-                 Base::print
-                 Derived::print
-                 Base::print
-                 Derived::print
-                 Base::print
-                 */
+                // 1 Способ: no virtual method
+                {
+                    using namespace print::no_virtual_method;
+                    std::cout << "no virtual method" << std::endl;
+                    
+                    // reference
+                    {
+                        std::cout << "reference" << std::endl;
+                        
+                        Derived derived;
+                        Base& base = derived;
+                        base.print();
+                        
+                        /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
+                         Base::print
+                         Derived::print
+                         Base::print
+                         Derived::print
+                         Base::print
+                         */
+                    }
+                    std::cout << std::endl;
+                    // pointer
+                    {
+                        std::cout << "pointer" << std::endl;
+                        
+                        Base* base = new Derived;
+                        base->print();
+                        delete base;
+                        
+                        /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
+                         Base::print
+                         Derived::print
+                         Base::print
+                         Base::print
+                         */
+                    }
+                }
+                std::cout << std::endl;
+                // 2 Способ: virtual method
+                {
+                    using namespace print::virtual_method;
+                    std::cout << "virtual method" << std::endl;
+                    
+                    // reference
+                    {
+                        std::cout << "reference" << std::endl;
+                        
+                        Derived derived;
+                        Base& base = derived;
+                        base.print();
+                        
+                        /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
+                         Base::print
+                         Derived::print
+                         Derived::print
+                         Derived::print
+                         Base::print
+                         */
+                    }
+                    std::cout << std::endl;
+                    // pointer
+                    {
+                        std::cout << "pointer" << std::endl;
+                        
+                        Base* base = new Derived;
+                        base->print();
+                        delete base;
+                        
+                        /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
+                         Base::print
+                         Derived::print
+                         Derived::print
+                         Base::print
+                         */
+                    }
+                }
+                std::cout << std::endl;
+                // 3 Способ: virtual method + virtual destructor
+                {
+                    using namespace print::virtual_destructor;
+                    std::cout << "virtual destructor" << std::endl;
+                    
+                    // reference
+                    {
+                        std::cout << "reference" << std::endl;
+                        
+                        Derived derived;
+                        Base& base = derived;
+                        base.print();
+                        
+                        /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
+                         Base::print
+                         Derived::print
+                         Derived::print
+                         Derived::print
+                         Base::print
+                         */
+                    }
+                    std::cout << std::endl;
+                    // pointer
+                    {
+                        std::cout << "pointer" << std::endl;
+                        
+                        Base* base = new Derived;
+                        base->print();
+                        delete base;
+                        
+                        /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
+                         Base::print
+                         Derived::print
+                         Derived::print
+                         Base::print
+                         */
+                    }
+                }
+                std::cout << std::endl;
             }
-            std::cout << std::endl;
-            // 2 Способ: virtual method
-            {
-                using namespace virtual_method;
-                std::cout << "virtual method" << std::endl;
-                
-                Derived derived;
-                Base& base = derived;
-                base.print();
-                
-                /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
-                 Base::print
-                 Derived::print
-                 Derived::print
-                 Derived::print
-                 Base::print
-                 */
-            }
-            std::cout << std::endl;
             /*
              3 Способ: NVI (non virtual interface) - шаблона невиртуального интерфейса использует public невиртуальные методы в качестве обертки над вызовами private/protected виртуальных методов. NVI - частный случай паттерна — «Шаблонный метод». Преимущество идиомы NVI - выполнение предварительных действий перед вызовов виртуального метода и выполнение завершающих действий после вызова виртуального метода (например, захват mutex).
              Плюсы:
@@ -295,18 +453,56 @@ namespace Virtual
                 using namespace no_virtual_destructor;
                 std::cout << "no virtual destructor" << std::endl;
                 
-                Base* base = new Derived;
-                base->print();
-                delete base; // деструктор производного класса не вызовется
+                // reference
+                {
+                    std::cout << "reference" << std::endl;
+                    
+                    Derived derived;
+                    Base& base = derived;
+                    base.print();
+                    
+                    /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
+                     Base::print
+                     Derived::print
+                     Derived::print
+                     Derived::print
+                     Base::print
+                     */
+                }
+                std::cout << std::endl;
+                // pointer
+                {
+                    std::cout << "pointer" << std::endl;
+                    
+                    Base* base = new Derived;
+                    base->print();
+                    delete base;
+                    
+                    /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
+                     Base::print
+                     Derived::print
+                     Derived::print
+                     Base::print
+                     */
+                }
+            }
+            /*
+             2 Способ: Множественное наследование при отсутствии виртуального деструктора: при множественном наследовании, при удалении объекта производного класса через указатель на второй базовый класс, функции operator delete(void*) будет передан неправильный адрес, в результате чего программа упадет.
+             */
+            {
+                using namespace no_virtual_destructor_inheritance;
+                std::cout << "no virtual destructor inheritance" << std::endl;
                 
-                /* Вызов print на «стеке» LIFO («последним пришёл — первым ушёл»)
-                 Base::print
-                 Derived::print
-                 Derived::print
+                [[maybe_unused]] B* b = new C;
+                /*
+                 При приведении С* к B* к исходному указателю прибавляется 4 байта, чтобы он указывал на подобъект 2-го базового класса (B). При отсутствии виртального деструктора в строке адрес не будет скорректирован обратно на эти 4 байта, в результате чего получается удаление памяти по левому адресу, что приводит к abort/terminate.
                  */
+#if 0
+                delete pb;
+#endif
             }
             std::cout << std::endl;
-            // 2 Способ: virtual destructor
+            // 3 Способ: virtual destructor
             {
                 using namespace virtual_destructor;
                 std::cout << "virtual destructor" << std::endl;

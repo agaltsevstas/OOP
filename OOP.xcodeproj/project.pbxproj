@@ -9,10 +9,12 @@
 /* Begin PBXBuildFile section */
 		802217332BCC4019006C1F16 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802217322BCC4019006C1F16 /* main.cpp */; };
 		8022173B2BCC4064006C1F16 /* Initialization.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802217392BCC4064006C1F16 /* Initialization.cpp */; };
-		8022173E2BCC4092006C1F16 /* Diamond_Inheritance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8022173C2BCC4092006C1F16 /* Diamond_Inheritance.cpp */; };
+		8022173E2BCC4092006C1F16 /* Inheritance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8022173C2BCC4092006C1F16 /* Inheritance.cpp */; };
 		802217412BCC4117006C1F16 /* Virtual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8022173F2BCC4117006C1F16 /* Virtual.cpp */; };
 		802217442BCC41D4006C1F16 /* Overload_Resolution.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802217422BCC41D4006C1F16 /* Overload_Resolution.cpp */; };
 		802217472BCD5A7E006C1F16 /* Aligment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802217452BCD5A7E006C1F16 /* Aligment.cpp */; };
+		8022175E2BD68A97006C1F16 /* Interview.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8022175C2BD68A97006C1F16 /* Interview.cpp */; };
+		809A46962BE67B36006FB23C /* Declaration_Definition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 809A46952BE67B36006FB23C /* Declaration_Definition.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,14 +34,18 @@
 		802217322BCC4019006C1F16 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		802217392BCC4064006C1F16 /* Initialization.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Initialization.cpp; sourceTree = "<group>"; };
 		8022173A2BCC4064006C1F16 /* Initialization.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Initialization.hpp; sourceTree = "<group>"; };
-		8022173C2BCC4092006C1F16 /* Diamond_Inheritance.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Diamond_Inheritance.cpp; sourceTree = "<group>"; };
-		8022173D2BCC4092006C1F16 /* Diamond_Inheritance.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Diamond_Inheritance.hpp; sourceTree = "<group>"; };
+		8022173C2BCC4092006C1F16 /* Inheritance.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Inheritance.cpp; sourceTree = "<group>"; };
+		8022173D2BCC4092006C1F16 /* Inheritance.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Inheritance.hpp; sourceTree = "<group>"; };
 		8022173F2BCC4117006C1F16 /* Virtual.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Virtual.cpp; sourceTree = "<group>"; };
 		802217402BCC4117006C1F16 /* Virtual.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Virtual.hpp; sourceTree = "<group>"; };
 		802217422BCC41D4006C1F16 /* Overload_Resolution.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Overload_Resolution.cpp; sourceTree = "<group>"; };
 		802217432BCC41D4006C1F16 /* Overload_Resolution.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Overload_Resolution.hpp; sourceTree = "<group>"; };
 		802217452BCD5A7E006C1F16 /* Aligment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Aligment.cpp; sourceTree = "<group>"; };
 		802217462BCD5A7E006C1F16 /* Aligment.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Aligment.hpp; sourceTree = "<group>"; };
+		8022175C2BD68A97006C1F16 /* Interview.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Interview.cpp; sourceTree = "<group>"; };
+		8022175D2BD68A97006C1F16 /* Interview.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Interview.hpp; sourceTree = "<group>"; };
+		809A46952BE67B36006FB23C /* Declaration_Definition.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Declaration_Definition.cpp; sourceTree = "<group>"; };
+		809A46972BE7DDDE006FB23C /* Declaration_Definition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Declaration_Definition.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,17 +78,21 @@
 		802217312BCC4019006C1F16 /* OOP */ = {
 			isa = PBXGroup;
 			children = (
-				802217322BCC4019006C1F16 /* main.cpp */,
-				802217392BCC4064006C1F16 /* Initialization.cpp */,
+				809A46972BE7DDDE006FB23C /* Declaration_Definition.hpp */,
+				809A46952BE67B36006FB23C /* Declaration_Definition.cpp */,
 				8022173A2BCC4064006C1F16 /* Initialization.hpp */,
-				8022173C2BCC4092006C1F16 /* Diamond_Inheritance.cpp */,
-				8022173D2BCC4092006C1F16 /* Diamond_Inheritance.hpp */,
-				8022173F2BCC4117006C1F16 /* Virtual.cpp */,
+				802217392BCC4064006C1F16 /* Initialization.cpp */,
+				8022173D2BCC4092006C1F16 /* Inheritance.hpp */,
+				8022173C2BCC4092006C1F16 /* Inheritance.cpp */,
 				802217402BCC4117006C1F16 /* Virtual.hpp */,
-				802217422BCC41D4006C1F16 /* Overload_Resolution.cpp */,
+				8022173F2BCC4117006C1F16 /* Virtual.cpp */,
 				802217432BCC41D4006C1F16 /* Overload_Resolution.hpp */,
-				802217452BCD5A7E006C1F16 /* Aligment.cpp */,
+				802217422BCC41D4006C1F16 /* Overload_Resolution.cpp */,
 				802217462BCD5A7E006C1F16 /* Aligment.hpp */,
+				802217452BCD5A7E006C1F16 /* Aligment.cpp */,
+				8022175D2BD68A97006C1F16 /* Interview.hpp */,
+				8022175C2BD68A97006C1F16 /* Interview.cpp */,
+				802217322BCC4019006C1F16 /* main.cpp */,
 			);
 			path = OOP;
 			sourceTree = "<group>";
@@ -145,11 +155,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				802217332BCC4019006C1F16 /* main.cpp in Sources */,
+				809A46962BE67B36006FB23C /* Declaration_Definition.cpp in Sources */,
 				8022173B2BCC4064006C1F16 /* Initialization.cpp in Sources */,
-				8022173E2BCC4092006C1F16 /* Diamond_Inheritance.cpp in Sources */,
+				8022173E2BCC4092006C1F16 /* Inheritance.cpp in Sources */,
 				802217442BCC41D4006C1F16 /* Overload_Resolution.cpp in Sources */,
 				802217472BCD5A7E006C1F16 /* Aligment.cpp in Sources */,
 				802217412BCC4117006C1F16 /* Virtual.cpp in Sources */,
+				8022175E2BD68A97006C1F16 /* Interview.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

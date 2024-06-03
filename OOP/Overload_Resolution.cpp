@@ -101,7 +101,7 @@ namespace overload_resolution
                 // derived->print("str"); Ошибка: Cannot initialize a parameter of type 'unsigned int' with an lvalue of type 'const char[4]'
                 derived->function(); // Base::function
             }
-            // Явное указание принадлежность в базовому классу
+            // Явный вызов метода принадлежности к базовому классу
             {
                 derived->Base::print(10u); // Base::print
                 derived->Base::print(100u); // Base::print

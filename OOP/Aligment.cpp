@@ -4,6 +4,12 @@
 
 namespace aligment
 {
+    template<typename ...Args>
+    struct alignas(Args...) Padding
+    {
+        char buffer[std::max({sizeof(Args)... })];
+    };
+
     void start()
     {
         /*
@@ -37,28 +43,38 @@ namespace aligment
             }
             // 2 Способ: инициализация членов в порядке их типа
             {
-                struct Padding // Должно быть bytes: 11
+                // 1 Способ: обычный
                 {
-                    char c1;     // bytes: 1
-                    char c2;     // bytes: 1
-                    char c3;     // bytes: 1
-                    int number1; // bytes: 4
-                    int number2; // bytes: 4
-                };
-                
-                [[maybe_unused]] auto padding_size = sizeof(Padding); // На самом деле bytes: 12 - размер структуры
-                [[maybe_unused]] auto padding_align = alignof(Padding); // bytes: 4 - выравнивание по границе
-                [[maybe_unused]] auto c1_offset = offsetof(Padding, c1); // offset: 0
-                [[maybe_unused]] auto c2_offset = offsetof(Padding, c2); // offset: 1
-                [[maybe_unused]] auto c3_offset = offsetof(Padding, c3); // offset: 2
-                [[maybe_unused]] auto number1_offset = offsetof(Padding, number1); // offset: 4
-                [[maybe_unused]] auto number2_offset = offsetof(Padding, number2); // offset: 8
-                
-                /*
-                 Хранение Padding в блоках памяти по 4 байта:
-                 1,1,   |4      |4
-                 0,1,2,3,4,5,6,7,8,9,10,11
-                 */
+                    struct Padding // Должно быть bytes: 11
+                    {
+                        char c1;     // bytes: 1
+                        char c2;     // bytes: 1
+                        char c3;     // bytes: 1
+                        int number1; // bytes: 4
+                        int number2; // bytes: 4
+                    };
+                    
+                    [[maybe_unused]] auto padding_size = sizeof(Padding); // На самом деле bytes: 12 - размер структуры
+                    [[maybe_unused]] auto padding_align = alignof(Padding); // bytes: 4 - выравнивание по границе
+                    [[maybe_unused]] auto c1_offset = offsetof(Padding, c1); // offset: 0
+                    [[maybe_unused]] auto c2_offset = offsetof(Padding, c2); // offset: 1
+                    [[maybe_unused]] auto c3_offset = offsetof(Padding, c3); // offset: 2
+                    [[maybe_unused]] auto number1_offset = offsetof(Padding, number1); // offset: 4
+                    [[maybe_unused]] auto number2_offset = offsetof(Padding, number2); // offset: 8
+                    
+                    /*
+                     Хранение Padding в блоках памяти по 4 байта:
+                     1,1,   |4      |4
+                     0,1,2,3,4,5,6,7,8,9,10,11
+                     */
+                }
+                // 2 Способ: variadic template: Padding будет выровнен по адресу std::max(int,char)
+                {
+                    [[maybe_unused]] Padding<int, char> padding; // Должно быть bytes: 11
+                    
+                    [[maybe_unused]] auto padding_size = sizeof(Padding<int, char>); // На самом деле bytes: 4 - размер структуры
+                    [[maybe_unused]] auto padding_align = alignof(Padding<int, char>); // bytes: 4 - выравнивание по границе
+                }
             }
             // 3 Способ: инициализация членов в обратном порядке их типа
             {
