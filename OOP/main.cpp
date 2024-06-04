@@ -1,24 +1,37 @@
+#include "ADL.hpp"
 #include "Aligment.hpp"
 #include "Declaration_Definition.hpp"
 #include "Initialization.hpp"
 #include "Inheritance.hpp"
 #include "Interview.hpp"
 #include "Overload_Resolution.hpp"
+#include "POD.hpp"
 #include "Virtual.hpp"
 
 #include <iostream>
 #include <vector>
 
 /*
+ Инициализация
  Сайты: https://learn.microsoft.com/ru-ru/cpp/cpp/initializers?view=msvc-170
         https://habr.com/ru/companies/jugru/articles/469465/
         https://ru.stackoverflow.com/questions/616184/%D0%9A%D0%B0%D0%BA-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-alignas
  
-  Declaration and definition:
-  Лекция: https://www.youtube.com/watch?v=c7CasTJKw7o&list=PLlb7e2G7aSpTFea2FYxp7mFfbZW-xavhL&index=11&ab_channel=ComputerScienceCenter
-  Сайты: https://habr.com/ru/companies/otus/articles/432834/
-         https://habr.com/ru/companies/jugru/articles/506104/
+ 
+Declaration and definition
+Лекция: https://www.youtube.com/watch?v=c7CasTJKw7o&list=PLlb7e2G7aSpTFea2FYxp7mFfbZW-xavhL&index=11&ab_channel=ComputerScienceCenter
+Сайты: https://habr.com/ru/companies/otus/articles/432834/
+    https://habr.com/ru/companies/jugru/articles/506104/
+ 
+POD
+Видео: https://www.youtube.com/watch?v=KqqrJYEUeTw&ab_channel=cppProsto
+Сайты: https://habr.com/ru/articles/470265/
+       https://learn.microsoft.com/ru-ru/cpp/cpp/trivial-standard-layout-and-pod-types?view=msvc-170
+       https://habr.com/ru/articles/532972/
+       https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85
+  
  */
+
 
 namespace declaration_definition // Объявление
 {
@@ -50,8 +63,8 @@ int main()
         /// Можно поменять индексы и имя массива местами.
         {
             int mas[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-            auto compare = mas[0] == *(mas + 0) == *(0 + mas) == 0[mas]; // одинаковый доступ к 0 элементу
-            int number = 3[mas - 1] - mas[3] + (mas - 1)[5]; // mas[2] - mas[3] + (mas[5] - 1) = 3 - 4 + (6 - 1) = 4
+            [[maybe_unused]] auto compare = mas[0] == *(mas + 0) == *(0 + mas) == 0[mas]; // одинаковый доступ к 0 элементу
+            [[maybe_unused]] int number = 3[mas - 1] - mas[3] + (mas - 1)[5]; // mas[2] - mas[3] + (mas[5] - 1) = 3 - 4 + (6 - 1) = 4
         }
         /// Арифметика указателей
         {
@@ -138,6 +151,15 @@ int main()
             }
         }
     }
+    /* ADL (argument-dependent lookup) - поиск по аргументу, можно не указывать пространство имен к функции, если один из аргументов принадлежит к тому же пространству имен и он уже указан. Компилятор ищет функцию в пространствах имен в типах аргументов.
+     */
+    {
+        using namespace ADL;
+        std::cout << "ADL" << std::endl;
+        
+        start();
+    }
+    std::cout << std::endl;
     /*
      Объявлений может быть много в разных единицах трансляциях (.cpp), но определение должно быть только одно, иначе будет переопределение (redefinition). Лучше объявление выносить в заголовочный файл (.h).
      */
@@ -159,7 +181,6 @@ int main()
         declaration_definition::print();
         declaration_definition::print_number();
     }
-    
     // virtual
     {
         Virtual::start();
@@ -364,6 +385,43 @@ int main()
      */
     {
         aligment::start();
+    }
+    /*
+     POD (plain old data) - простая структура данных (std::is_pod), занимающая непрерывную область памяти, компилятор НЕ оптимизируют поля класса/структуры: они находятся в памяти в том порядке, в котором они указаны (возможно с некоторым выравниванием - aligment), поэтому объекты такого типа можно скопировать с помощью memcpy, сериализировать по сети и воссоздать. Противоположность POD типа — управляемая структура данных, которую компилятор может оптимизировать поля класса/структуры по усмотрению (переставить местами), такая перестановка может серьёзно сэкономить память, но нарушает совместимость. Объекты POD быстрее создаются и копируются, чем объекты управляемой структуры данных.
+     C++20: POD типа уже не будет, останутся только тривиальный тип и тип со стандартным устройством.
+     Имеет характеристики: тривиального класса/структуры (trivial type) + со стандартным устройством (standard layout).
+     
+     Выравнивание памяти (aligment) - необходимо для эффективного обращения процессора к данным в памяти. Процессору проще обращаться к данным, когда они последовательно лежат по блокам в 4 байта для 32-битной ОС /8 байт 64-битной ОС, поэтому компилятор подкладывает (padding) неиспользуемые байты для выравнивания к границам блоков памяти по 4/8 байт.
+     
+     Тривиальный класс/структура (std::is_trivial) - занимает непрерывную область памяти, поэтому компилятор может самостоятельно выбирать способ упорядочивания членов
+     Характеристики:
+     — конструктор: явно отсутствующий или явно задан как default.
+     — копирующий конструктор: явно отсутствующий или явно задан как default.
+     — перемещающий конструктор: явно отсутствующий или явно задан как default.
+     — копирующий оператор присваивания: явно отсутствующий или явно задан как default.
+     — перемещающий оператор присваивания: явно отсутствующий или явно задан как default.
+     — деструктор: явно отсутствующий или явно задан как default.
+     - все поля и базовые классы — тоже тривиальные типы.
+     - все поля класса - не инициализированны.
+     - поля могут иметь разный модификатор доступа (public/protected/private).
+     - не имеет виртуальных методов (включая деструктор).
+     - не имеет виртуальных базовых типов (класс/структура).
+     
+     Класс/структура со стандартным устройством (std::is_standard_layout).
+     Характеристики:
+     - не имеет виртуальных методов.
+     - не имеет виртуальных базовых типов (класс/структура).
+     - не имеет полей-ссылок.
+     - все поля имеют одинаковый модификатор доступа (public/protected/private).
+     - нельзя наследоваться от наследуемого класса/структуры.
+     - все поля и базовые классы — тоже типы со стандартным устройством.
+     */
+    std::cout << std::endl;
+    {
+        using namespace POD;
+        std::cout << "POD" << std::endl;
+        
+        start();
     }
     std::cout << std::endl;
     // Задачи в интервью

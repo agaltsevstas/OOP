@@ -14,6 +14,8 @@
 		802217442BCC41D4006C1F16 /* Overload_Resolution.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802217422BCC41D4006C1F16 /* Overload_Resolution.cpp */; };
 		802217472BCD5A7E006C1F16 /* Aligment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802217452BCD5A7E006C1F16 /* Aligment.cpp */; };
 		8022175E2BD68A97006C1F16 /* Interview.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8022175C2BD68A97006C1F16 /* Interview.cpp */; };
+		807AC6492C0EFC6E00EA3D0E /* POD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 807AC6472C0EFC6E00EA3D0E /* POD.cpp */; };
+		807AC64C2C0EFDB600EA3D0E /* ADL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 807AC64A2C0EFDB600EA3D0E /* ADL.cpp */; };
 		809A46962BE67B36006FB23C /* Declaration_Definition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 809A46952BE67B36006FB23C /* Declaration_Definition.cpp */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +46,10 @@
 		802217462BCD5A7E006C1F16 /* Aligment.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Aligment.hpp; sourceTree = "<group>"; };
 		8022175C2BD68A97006C1F16 /* Interview.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Interview.cpp; sourceTree = "<group>"; };
 		8022175D2BD68A97006C1F16 /* Interview.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Interview.hpp; sourceTree = "<group>"; };
+		807AC6472C0EFC6E00EA3D0E /* POD.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = POD.cpp; sourceTree = "<group>"; };
+		807AC6482C0EFC6E00EA3D0E /* POD.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = POD.hpp; sourceTree = "<group>"; };
+		807AC64A2C0EFDB600EA3D0E /* ADL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ADL.cpp; sourceTree = "<group>"; };
+		807AC64B2C0EFDB600EA3D0E /* ADL.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ADL.hpp; sourceTree = "<group>"; };
 		809A46952BE67B36006FB23C /* Declaration_Definition.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Declaration_Definition.cpp; sourceTree = "<group>"; };
 		809A46972BE7DDDE006FB23C /* Declaration_Definition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Declaration_Definition.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -78,6 +84,8 @@
 		802217312BCC4019006C1F16 /* OOP */ = {
 			isa = PBXGroup;
 			children = (
+				807AC64B2C0EFDB600EA3D0E /* ADL.hpp */,
+				807AC64A2C0EFDB600EA3D0E /* ADL.cpp */,
 				809A46972BE7DDDE006FB23C /* Declaration_Definition.hpp */,
 				809A46952BE67B36006FB23C /* Declaration_Definition.cpp */,
 				8022173A2BCC4064006C1F16 /* Initialization.hpp */,
@@ -90,6 +98,8 @@
 				802217422BCC41D4006C1F16 /* Overload_Resolution.cpp */,
 				802217462BCD5A7E006C1F16 /* Aligment.hpp */,
 				802217452BCD5A7E006C1F16 /* Aligment.cpp */,
+				807AC6482C0EFC6E00EA3D0E /* POD.hpp */,
+				807AC6472C0EFC6E00EA3D0E /* POD.cpp */,
 				8022175D2BD68A97006C1F16 /* Interview.hpp */,
 				8022175C2BD68A97006C1F16 /* Interview.cpp */,
 				802217322BCC4019006C1F16 /* main.cpp */,
@@ -124,7 +134,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					8022172E2BCC4019006C1F16 = {
 						CreatedOnToolsVersion = 15.3;
@@ -157,9 +167,11 @@
 				802217332BCC4019006C1F16 /* main.cpp in Sources */,
 				809A46962BE67B36006FB23C /* Declaration_Definition.cpp in Sources */,
 				8022173B2BCC4064006C1F16 /* Initialization.cpp in Sources */,
+				807AC64C2C0EFDB600EA3D0E /* ADL.cpp in Sources */,
 				8022173E2BCC4092006C1F16 /* Inheritance.cpp in Sources */,
 				802217442BCC41D4006C1F16 /* Overload_Resolution.cpp in Sources */,
 				802217472BCD5A7E006C1F16 /* Aligment.cpp in Sources */,
+				807AC6492C0EFC6E00EA3D0E /* POD.cpp in Sources */,
 				802217412BCC4117006C1F16 /* Virtual.cpp in Sources */,
 				8022175E2BD68A97006C1F16 /* Interview.cpp in Sources */,
 			);
@@ -202,6 +214,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -263,6 +276,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -287,6 +301,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -295,6 +310,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

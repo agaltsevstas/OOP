@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ADL.cpp" />
     <ClCompile Include="Aligment.cpp" />
     <ClCompile Include="Declaration_Definition.cpp" />
     <ClCompile Include="Inheritance.cpp" />
@@ -26,15 +27,18 @@
     <ClCompile Include="Interview.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Overload_Resolution.cpp" />
+    <ClCompile Include="POD.cpp" />
     <ClCompile Include="Virtual.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ADL.hpp" />
     <ClInclude Include="Aligment.hpp" />
     <ClInclude Include="Declaration_Definition.hpp" />
     <ClInclude Include="Inheritance.hpp" />
     <ClInclude Include="Initialization.hpp" />
     <ClInclude Include="Interview.hpp" />
     <ClInclude Include="Overload_Resolution.hpp" />
+    <ClInclude Include="POD.hpp" />
     <ClInclude Include="Virtual.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -120,7 +124,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
