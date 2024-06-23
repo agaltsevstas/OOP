@@ -3,7 +3,6 @@
 #include "Declaration_Definition.hpp"
 #include "Initialization.hpp"
 #include "Inheritance.hpp"
-#include "Interview.hpp"
 #include "Overload_Resolution.hpp"
 #include "POD.hpp"
 #include "Virtual.hpp"
@@ -46,111 +45,6 @@ namespace declaration_definition // Объявление
 
 int main()
 {
-    /*
-     Числа с плавающей точкой: сравнение должно быть в определенном диапазоне, а само число должно быть взято по модулю.
-     */
-    {
-        double number = 2.0;
-        if (number <= 2.1 && number >= 1.9)
-        {
-            std::cout << "number = 2.0" << std::endl;
-        }
-    }
-    /*
-     Массивы
-     */
-    {
-        /// Можно поменять индексы и имя массива местами.
-        {
-            int mas[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-            [[maybe_unused]] auto compare = mas[0] == *(mas + 0) == *(0 + mas) == 0[mas]; // одинаковый доступ к 0 элементу
-            [[maybe_unused]] int number = 3[mas - 1] - mas[3] + (mas - 1)[5]; // mas[2] - mas[3] + (mas[5] - 1) = 3 - 4 + (6 - 1) = 4
-        }
-        /// Арифметика указателей
-        {
-            char mas[] = {1,1,1,1, 1,1,1,1, 1,1,1,1};
-            *((int*)mas + 2) = 0; // int = 4 байта => 4 * 2 = 8, зануляем последние 4 байта, начиная с 8 элемента
-            for (int i = 0, I = sizeof(mas)/sizeof(mas[0]); i < I; ++i)
-                std::cout << (int)mas[i] << ",";
-            std::cout << std::endl;
-        }
-    }
-    /*
-     Переполнение безнакового числа: Бесконечный цикл
-     */
-    {
-        // 1 Пример
-        {
-            bool overflow = false;
-            for (uint8_t i = 0; i < 256; ++i)
-            {
-                if (i == 255)
-                    overflow = true;
-                else if (i == 1 && overflow)
-                    break;
-                std::cout << "Число: " << (int)i << std::endl;
-            }
-        }
-        // 2 Пример
-        {
-            unsigned char count = 128; // 1000 0000 = 2^7 = 128
-            
-            // Цикл не начинается: приведение типа к unsigned char
-            {
-                [[maybe_unused]] auto offset = (unsigned char) (count << 1); // // 0000 0000 = 0
-                for (unsigned char i = 0; i < (unsigned char) (count << 1); ++i) // 0 < 0
-                    std::cout << "Число: " << (int)i << std::endl;
-            }
-            // Бесконечный цикл: : приведение типа к int
-            {
-                bool overflow = false;
-                [[maybe_unused]] auto offset = (count << 1); // // 1 0000 0000 = 2^8 = 256
-                for (unsigned char i = 0; i < (count << 1); ++i) // 0 < 0
-                {
-                    if (i == 255)
-                        overflow = true;
-                    else if (i == 1 && overflow)
-                        break;
-                    std::cout << "Число: " << (int)i << std::endl;
-                }
-            }
-        }
-    }
-    /*
-     Указатели. Отличие указателя от константного указателя: если const находится слева от * - это указатель на константу, если const находится справа от * - это константный указатель. Если const находится слева и справа от * - это константный указатель на константную переменную.
-     */
-    {
-        int value = 1;
-        
-        /// Указатель на константу: можно менять только указатель. Оба варианта идентичны:
-        {
-            const int* const_int_ptr = &value;
-            int const* int_const_ptr = &value;
-            
-            // *const_int_ptr = 10; // Ошибка: Read-only variable is not assignable
-            const_int_ptr = nullptr;
-            
-            // *int_const_ptr = 10; // Ошибка: Read-only variable is not assignable
-            int_const_ptr = nullptr;
-        }
-        /// Константные указатели. Оба варианта НЕидентичны:
-        {
-            /// Константный указатель на переменную:
-            {
-                int* const int_ptr_const = &value;
-                
-                *int_ptr_const = 10;
-                // int_ptr_const = nullptr; // Ошибка: Cannot assign to variable with const-qualified type 'int *const'
-            }
-            /// Константный указатель на константную переменную:
-            {
-                [[maybe_unused]] const int* const const_int_ptr_const = &value;
-                
-                // *int_ptr_const = 10; // Ошибка: Read-only variable is not assignable
-                // int_ptr_const = nullptr; // Ошибка: Cannot assign to variable with const-qualified type 'int *const'
-            }
-        }
-    }
     /* ADL (argument-dependent lookup) - поиск по аргументу, можно не указывать пространство имен к функции, если один из аргументов принадлежит к тому же пространству имен и он уже указан. Компилятор ищет функцию в пространствах имен в типах аргументов.
      */
     {
@@ -424,8 +318,4 @@ int main()
         start();
     }
     std::cout << std::endl;
-    // Задачи в интервью
-    {
-        interview::start();
-    }
 }

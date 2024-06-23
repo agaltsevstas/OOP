@@ -24,7 +24,6 @@
     <ClCompile Include="Declaration_Definition.cpp" />
     <ClCompile Include="Inheritance.cpp" />
     <ClCompile Include="Initialization.cpp" />
-    <ClCompile Include="Interview.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Overload_Resolution.cpp" />
     <ClCompile Include="POD.cpp" />
@@ -36,7 +35,6 @@
     <ClInclude Include="Declaration_Definition.hpp" />
     <ClInclude Include="Inheritance.hpp" />
     <ClInclude Include="Initialization.hpp" />
-    <ClInclude Include="Interview.hpp" />
     <ClInclude Include="Overload_Resolution.hpp" />
     <ClInclude Include="POD.hpp" />
     <ClInclude Include="Virtual.hpp" />

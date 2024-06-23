@@ -297,29 +297,32 @@ namespace no_virtual_destructor_inheritance
 {
     struct A
     {
-        int a = 0; // Обязательно для примера, чтобы была ошибка при delete!
         ~A()
         {
             std::cout << " ~A" << std::endl;
         }
+        
+        int a = 0; // Обязательно для примера, чтобы была ошибка при delete!
     };
 
     struct B
     {
-        int b = 0; // Обязательно для примера, чтобы была ошибка при delete!
         ~B()
         {
             std::cout << " ~B" << std::endl;
         }
+        
+        int b = 0; // Обязательно для примера, чтобы была ошибка при delete!
     };
 
     struct C : public A, public B
     {
-        int c = 0;
         ~C()
         {
             std::cout << " ~C" << std::endl;
         }
+        
+        int c = 0;
     };
 }
 
