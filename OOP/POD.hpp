@@ -3,7 +3,7 @@
 
 namespace POD
 {
-    void start();
+    void Start();
 }
 
 #endif /* POD_hpp */

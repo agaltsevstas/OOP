@@ -4,7 +4,7 @@
 
 namespace aligment
 {
-    void start();
+    void Start();
 }
 
 #endif /* Aligment_hpp */

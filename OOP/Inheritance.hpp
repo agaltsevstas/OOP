@@ -11,7 +11,7 @@
 
 namespace inheritance
 {
-    void start();
+    void Start();
 }
 
 #endif /* Diamond_Inheritance_hpp */

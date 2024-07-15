@@ -22,21 +22,25 @@
     <ClCompile Include="ADL.cpp" />
     <ClCompile Include="Aligment.cpp" />
     <ClCompile Include="Declaration_Definition.cpp" />
+    <ClCompile Include="EBO.cpp" />
     <ClCompile Include="Inheritance.cpp" />
     <ClCompile Include="Initialization.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Overload_Resolution.cpp" />
     <ClCompile Include="POD.cpp" />
+    <ClCompile Include="RVO&amp;NRVO.cpp" />
     <ClCompile Include="Virtual.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADL.hpp" />
     <ClInclude Include="Aligment.hpp" />
     <ClInclude Include="Declaration_Definition.hpp" />
+    <ClInclude Include="EBO.hpp" />
     <ClInclude Include="Inheritance.hpp" />
     <ClInclude Include="Initialization.hpp" />
     <ClInclude Include="Overload_Resolution.hpp" />
     <ClInclude Include="POD.hpp" />
+    <ClInclude Include="RVO&amp;NRVO.hpp" />
     <ClInclude Include="Virtual.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

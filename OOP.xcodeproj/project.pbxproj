@@ -16,6 +16,8 @@
 		807AC6492C0EFC6E00EA3D0E /* POD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 807AC6472C0EFC6E00EA3D0E /* POD.cpp */; };
 		807AC64C2C0EFDB600EA3D0E /* ADL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 807AC64A2C0EFDB600EA3D0E /* ADL.cpp */; };
 		809A46962BE67B36006FB23C /* Declaration_Definition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 809A46952BE67B36006FB23C /* Declaration_Definition.cpp */; };
+		80A33DC92C45750F007DF3EE /* EBO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A33DC72C45750F007DF3EE /* EBO.cpp */; };
+		80A33DCC2C457536007DF3EE /* RVO&NRVO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A33DCA2C457536007DF3EE /* RVO&NRVO.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +51,10 @@
 		807AC64B2C0EFDB600EA3D0E /* ADL.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ADL.hpp; sourceTree = "<group>"; };
 		809A46952BE67B36006FB23C /* Declaration_Definition.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Declaration_Definition.cpp; sourceTree = "<group>"; };
 		809A46972BE7DDDE006FB23C /* Declaration_Definition.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Declaration_Definition.hpp; sourceTree = "<group>"; };
+		80A33DC72C45750F007DF3EE /* EBO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EBO.cpp; sourceTree = "<group>"; };
+		80A33DC82C45750F007DF3EE /* EBO.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EBO.hpp; sourceTree = "<group>"; };
+		80A33DCA2C457536007DF3EE /* RVO&NRVO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "RVO&NRVO.cpp"; sourceTree = "<group>"; };
+		80A33DCB2C457536007DF3EE /* RVO&NRVO.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "RVO&NRVO.hpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +89,8 @@
 			children = (
 				807AC64B2C0EFDB600EA3D0E /* ADL.hpp */,
 				807AC64A2C0EFDB600EA3D0E /* ADL.cpp */,
+				80A33DC82C45750F007DF3EE /* EBO.hpp */,
+				80A33DC72C45750F007DF3EE /* EBO.cpp */,
 				809A46972BE7DDDE006FB23C /* Declaration_Definition.hpp */,
 				809A46952BE67B36006FB23C /* Declaration_Definition.cpp */,
 				8022173A2BCC4064006C1F16 /* Initialization.hpp */,
@@ -97,6 +105,8 @@
 				802217452BCD5A7E006C1F16 /* Aligment.cpp */,
 				807AC6482C0EFC6E00EA3D0E /* POD.hpp */,
 				807AC6472C0EFC6E00EA3D0E /* POD.cpp */,
+				80A33DCB2C457536007DF3EE /* RVO&NRVO.hpp */,
+				80A33DCA2C457536007DF3EE /* RVO&NRVO.cpp */,
 				802217322BCC4019006C1F16 /* main.cpp */,
 			);
 			path = OOP;
@@ -167,7 +177,9 @@
 				802217442BCC41D4006C1F16 /* Overload_Resolution.cpp in Sources */,
 				802217472BCD5A7E006C1F16 /* Aligment.cpp in Sources */,
 				807AC6492C0EFC6E00EA3D0E /* POD.cpp in Sources */,
+				80A33DC92C45750F007DF3EE /* EBO.cpp in Sources */,
 				802217412BCC4117006C1F16 /* Virtual.cpp in Sources */,
+				80A33DCC2C457536007DF3EE /* RVO&NRVO.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

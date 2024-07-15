@@ -1,10 +1,12 @@
 #include "ADL.hpp"
+#include "EBO.hpp"
 #include "Aligment.hpp"
 #include "Declaration_Definition.hpp"
 #include "Initialization.hpp"
 #include "Inheritance.hpp"
 #include "Overload_Resolution.hpp"
 #include "POD.hpp"
+#include "RVO&NRVO.hpp"
 #include "Virtual.hpp"
 
 #include <iostream>
@@ -17,17 +19,19 @@
         https://ru.stackoverflow.com/questions/616184/%D0%9A%D0%B0%D0%BA-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-alignas
  
  
-Declaration and definition
-Лекция: https://www.youtube.com/watch?v=c7CasTJKw7o&list=PLlb7e2G7aSpTFea2FYxp7mFfbZW-xavhL&index=11&ab_channel=ComputerScienceCenter
-Сайты: https://habr.com/ru/companies/otus/articles/432834/
+ Declaration and definition
+ Лекция: https://www.youtube.com/watch?v=c7CasTJKw7o&list=PLlb7e2G7aSpTFea2FYxp7mFfbZW-xavhL&index=11&ab_channel=ComputerScienceCenter
+ Сайты: https://habr.com/ru/companies/otus/articles/432834/
     https://habr.com/ru/companies/jugru/articles/506104/
  
-POD
-Видео: https://www.youtube.com/watch?v=KqqrJYEUeTw&ab_channel=cppProsto
-Сайты: https://habr.com/ru/articles/470265/
+ POD
+ Видео: https://www.youtube.com/watch?v=KqqrJYEUeTw&ab_channel=cppProsto
+ Сайты: https://habr.com/ru/articles/470265/
        https://learn.microsoft.com/ru-ru/cpp/cpp/trivial-standard-layout-and-pod-types?view=msvc-170
        https://habr.com/ru/articles/532972/
        https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D1%81%D1%82%D0%B0%D1%8F_%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85
+
+ RVO & NRVO: https://habr.com/ru/companies/vk/articles/666330/
   
  */
 
@@ -51,7 +55,16 @@ int main()
         using namespace ADL;
         std::cout << "ADL" << std::endl;
         
-        start();
+        Start();
+    }
+    /*
+     EBO (empty base optimization) - гарантирует размер любого объекта/подъекта должен быть не менее 1 байта, даже если тип является пустым, чтобы можно было получить разные адреса разных объектов одного и того же типа.
+     */
+    {
+        using namespace EBO;
+        std::cout << "EBO" << std::endl;
+        
+        Start();
     }
     std::cout << std::endl;
     /*
@@ -77,11 +90,11 @@ int main()
     }
     // virtual
     {
-        Virtual::start();
+        Virtual::Start();
     }
     // Разрешение перегрузки
     {
-        overload_resolution::start();
+        overload_resolution::Start();
     }
     /*
      Инициализация - язык от C унаследованы 5 типов инициализации: 1) инициализация по умолчанию, 2) нулевая инициализация, 3) копирующая инициализация, 4) агрегатная и 5) статическая инициализация.
@@ -253,7 +266,7 @@ int main()
     }
     // Порядок инициализации членов класса зависит от порядка их объявления, а не от порядка их в конструкторе!!!
     {
-        initialization::start();
+        initialization::Start();
     }
     std::cout << std::endl;
     // Обычное наследование
@@ -266,19 +279,18 @@ int main()
          protected             | protected                | private                   | protected
          */
         
-        inheritance::start();
+        inheritance::Start();
     }
-    std::cout << std::endl;
     // Наследование
     {
-        inheritance::start();
+        inheritance::Start();
     }
     /*
      Выравнивание памяти (aligment) - необходимо для эффективного обращения процессора к данным в памяти. 
      Процессору проще обращаться к данным, когда они последовательно лежат по блокам в 4 байта для 32-битной ОС /8 байт 64-битной ОС, поэтому компилятор подкладывает (padding) неиспользуемые байты для выравнивания к границам блоков памяти по 4/8 байт.
      */
     {
-        aligment::start();
+        aligment::Start();
     }
     /*
      POD (plain old data) - простая структура данных (std::is_pod), занимающая непрерывную область памяти, компилятор НЕ оптимизируют поля класса/структуры: они находятся в памяти в том порядке, в котором они указаны (возможно с некоторым выравниванием - aligment), поэтому объекты такого типа можно скопировать с помощью memcpy, сериализировать по сети и воссоздать. Противоположность POD типа — управляемая структура данных, которую компилятор может оптимизировать поля класса/структуры по усмотрению (переставить местами), такая перестановка может серьёзно сэкономить память, но нарушает совместимость. Объекты POD быстрее создаются и копируются, чем объекты управляемой структуры данных.
@@ -310,12 +322,22 @@ int main()
      - нельзя наследоваться от наследуемого класса/структуры.
      - все поля и базовые классы — тоже типы со стандартным устройством.
      */
-    std::cout << std::endl;
     {
         using namespace POD;
         std::cout << "POD" << std::endl;
         
-        start();
+        Start();
     }
-    std::cout << std::endl;
+    /*
+     RVO (Return Value Optimization) - оптимизация возвращаемого значения. Компилятор при создании и возвращения в точке вызова return временного значения (rvalue) оптимизирует код, не вызывая лишние конструкторы копирования/перемещения, а вместо этого сразу вызывает конструктор в точке вызова функции.
+     NRVO (Named Return Value Optimization) - именнованная оптимизация возвращаемого значения. Компилятор при создании и возвращения локальной переменной (lvalue) оптимизирует код, не вызывая лишние конструкторы копирования/перемещения, а вместо этого сразу вызывает конструктор в точке вызова функции.
+     До 17-го стандарта RVO/NRVO было рекомендацией для компилятора, а в C++17 стало обязательной оптимизацией и по умолчанию включена. Отключить её можно при помощи флага компиляции -fno-elide-constructors.
+     Условия для оптимизации:
+     - при NRVO возвращаться должен ТОЛЬКО локальный объект, а не ссылка на него или какая-то его часть.
+     - при NRVO возвращаемый объект не должен быть volatile и нельзя использовать std::move.
+     - при RVO возвращаемый объект структуры/класса не должен иметь explicit конструктор.
+     */
+    {
+        RVO_NRVO::Start();
+    }
 }

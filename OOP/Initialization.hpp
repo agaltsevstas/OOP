@@ -4,7 +4,7 @@
 
 namespace initialization
 {
-    void start();
+    void Start();
 }
 
 #endif /* Initialization_h */

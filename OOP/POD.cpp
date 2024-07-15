@@ -185,7 +185,7 @@ namespace POD
         }
     }
 
-    void start()
+    void Start()
     {
         
         /*
@@ -264,6 +264,8 @@ namespace POD
                 [[maybe_unused]] auto c = std::is_standard_layout<C>::value; // true
                 /// Нельзя наследоваться от наследуемого класса/структуры
                 [[maybe_unused]] auto d = std::is_standard_layout<D>::value; // false
+                
+                std::cout << std::endl;
             }
         }
         /*
@@ -302,6 +304,10 @@ namespace POD
             [[maybe_unused]] auto a = std::is_pod<A>::value; // true
             [[maybe_unused]] auto b = std::is_pod<B>::value; // true
             [[maybe_unused]] auto c = std::is_pod<C>::value; // true
+            
+            std::cout << std::endl;
         }
+        
+        std::cout << std::endl;
     }
 }

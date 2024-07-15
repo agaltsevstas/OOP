@@ -4,7 +4,7 @@
 
 namespace overload_resolution
 {
-    void start();
+    void Start();
 }
 
 #endif /* Overload_Resolution_hpp */

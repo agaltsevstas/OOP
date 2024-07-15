@@ -279,7 +279,7 @@ namespace virtual_destructor
 
 namespace Virtual
 {
-    void start()
+    void Start()
     {
         // virtual
         std::cout << "virtual" << std::endl;

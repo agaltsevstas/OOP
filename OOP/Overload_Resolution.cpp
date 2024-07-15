@@ -76,7 +76,7 @@ namespace overload_resolution
         };
     }
 
-    void start()
+    void Start()
     {
         // Разрешение перегрузки
         std::cout << "overload resolution" << std::endl;

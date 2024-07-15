@@ -4,7 +4,7 @@
 
 namespace Virtual
 {
-    void start();
+    void Start();
 }
 
 #endif /* Virtual_hpp */

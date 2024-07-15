@@ -3,7 +3,7 @@
 
 namespace ADL
 {
-    void start();
+    void Start();
 }
 
 #endif /* ADL_hpp */

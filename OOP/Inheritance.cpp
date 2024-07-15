@@ -8,11 +8,11 @@
  */
 
 /*
- Общая таблица спецификаторов доступа и типов наследования:
- В родительском классе | public в дочернем классе | private в дочернем классе | protected в дочернем классе
- public                | public                   | private                   | protected
- private               | Недоступен               | Недоступен                | Недоступен
- protected             | protected                | private                   | protected
+ ОБЩАЯ ТАБЛИЦА спецификаторов доступа и типов наследования (ограничения касаются для классов наследуемых от Derived и в месте вызова объекта Derived, внутри самого класса Derived: вызов членов базового класса в методах Derived - эти ограничения не касаются):
+ Base.                 | Derived : public Base    | Derived : protected Base    | Derived : private Base
+ public                | public                   | protected                   | private
+ private               | Недоступен               | Недоступен                  | Недоступен
+ protected             | protected                | protected                   | private
  */
 
 namespace public_inheritance
@@ -166,6 +166,7 @@ namespace private_inheritance
         {
             std::cout << "public Base::print1" << std::endl;
         }
+        
     protected:
         void print2()
         {
@@ -328,7 +329,7 @@ namespace no_virtual_destructor_inheritance
 
 namespace inheritance
 {
-    void start()
+    void Start()
     {
         // public наследование
         {
@@ -461,6 +462,7 @@ namespace inheritance
 #if 0
             delete b;
 #endif
+            std::cout << std::endl;
         }
     }
 }

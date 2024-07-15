@@ -193,7 +193,7 @@ namespace Order_Capital
 
 namespace initialization
 {
-    void start()
+    void Start()
     {
         // Порядок инициализации членов класса зависит от порядка их объявления, а не от порядка их в конструкторе!!!
         {
