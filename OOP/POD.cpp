@@ -187,6 +187,7 @@ namespace POD
 
     void Start()
     {
+        std::cout << "POD" << std::endl;
         
         /*
          Тривиальный класс/структура (std::trivial type).
