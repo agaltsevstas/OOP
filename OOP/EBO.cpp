@@ -14,7 +14,7 @@ namespace EBO
         
         /// Без virtual
         {
-            std::cout << "first subtask" << std::endl;
+            std::cout << "Без virtual" << std::endl;
             
             class Base { };
             class Derived : public Base {};
@@ -26,7 +26,7 @@ namespace EBO
         }
         /// virtual: Указатель vtable/vpointer/vptr весит 4 байта 32-битного процессора / 8 байт 64-битного процессора, и сама таблица виртуальных функций занимает память.
         {
-            std::cout << "second subtask" << std::endl;
+            std::cout << "virtual" << std::endl;
             
             class Base { void virtual print() {std::cout << "Base::print" << std::endl;} };
             class Derived : public Base { void print() override {std::cout << "Derived::print" << std::endl;} };

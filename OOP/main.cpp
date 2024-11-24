@@ -35,6 +35,58 @@
   
  */
 
+/*
+ Внутреннее связывание/компоновка/линковка (internal linkage) - использование функции/переменной в ОДНОЙ единице трансляции (.cpp, включающий содержимое всех .h). При объявлении символа с внутренним связыванием в заголовочном файле (.hpp), каждая единица трансляции (.cpp), включающая в себя этот файл, получит копию этого символа - это плохо, т.к. расход памяти для больших объектов может быть очень высок из-за копирования под каждую единицу трансляции при формирования промежуточных объектных файлов (.o - Linux/.obj - Windows).
+   Пример:
+   - const переменная
+   - constexpr переменная, имеет свойства const
+   - static
+   - безымянный namespace
+ */
+namespace internal_linkage
+{
+    void print_Example();
+
+    namespace
+    {
+        // В Declaration_Definition.cpp есть static method с таким же названием
+        struct Example1
+        {
+            // В Declaration_Definition.cpp есть static method с таким же названием
+            static void print()
+            {
+                std::cout << "main.cpp" << std::endl;
+            }
+        };
+    }
+}
+
+/*
+ Внешнее связывание/комповнока/линковка (external linkage) - использование функции/переменной в разных единицах трансляции (.cpp, включающий содержимое всех .h).
+   Пример:
+   - extern
+   - inline переменная/функция
+   - Non-const глобальная переменная
+   - функция
+   - constexpr функция, имеет свойства inline
+   - шаблоны
+   - классы/структуры
+   - именновынные namespace
+ */
+namespace external_linkage
+{
+    void print_Example();
+
+    // В Declaration_Definition.cpp есть static method с таким же названием
+    struct Example
+    {
+        // В Declaration_Definition.cpp есть static method с таким же названием
+        static void print()
+        {
+            std::cout << "main.cpp" << std::endl;
+        }
+    };
+}
 
 namespace declaration_definition // Объявление
 {
@@ -49,6 +101,42 @@ namespace declaration_definition // Объявление
 
 int main()
 {
+    /*
+     Указатели.
+     Отличие указателя от константного указателя: если const находится слева от * - это указатель на константу, если const находится справа от * - это константный указатель. Если const находится слева и справа от * - это константный указатель на константную переменную.
+     */
+    {
+        int value = 1;
+        
+        /// Указатель на константу: можно менять только указатель. Оба варианта идентичны:
+        {
+            const int* const_int_ptr = &value;
+            int const* int_const_ptr = &value;
+            
+            // *const_int_ptr = 10; // Ошибка: Read-only variable is not assignable
+            const_int_ptr = nullptr;
+            
+            // *int_const_ptr = 10; // Ошибка: Read-only variable is not assignable
+            int_const_ptr = nullptr;
+        }
+        /// Константные указатели. Оба варианта НЕидентичны:
+        {
+            /// Константный указатель на переменную:
+            {
+                int* const int_ptr_const = &value;
+                
+                *int_ptr_const = 10;
+                // int_ptr_const = nullptr; // Ошибка: Cannot assign to variable with const-qualified type 'int *const'
+            }
+            /// Константный указатель на константную переменную:
+            {
+                [[maybe_unused]] const int* const const_int_ptr_const = &value;
+                
+                // *int_ptr_const = 10; // Ошибка: Read-only variable is not assignable
+                // int_ptr_const = nullptr; // Ошибка: Cannot assign to variable with const-qualified type 'int *const'
+            }
+        }
+    }
     /* ADL (argument-dependent lookup) - поиск по аргументу, можно не указывать пространство имен к функции, если один из аргументов принадлежит к тому же пространству имен и он уже указан. Компилятор ищет функцию в пространствах имен в типах аргументов.
      */
     {
@@ -77,13 +165,16 @@ int main()
         std::cout << "const number2: " << &internal_linkage::number2 << std::endl;
         std::cout << "constexpr number3: " << &internal_linkage::number3 << std::endl;
         internal_linkage::print();
+        internal_linkage::Example1::print(); // "main.cpp"
+        internal_linkage::print_Example(); // "Declaration_Definition.cpp"
         std::cout << std::endl;
         
         std::cout << "external linkage" << std::endl;
         std::cout << "extern number1: " << &external_linkage::number1 << std::endl;
         std::cout << "inline number2: " << &external_linkage::number2 << std::endl;
-        std::cout << "static constexpr number: " << &external_linkage::Number::number << std::endl;
         external_linkage::print();
+        external_linkage::Example::print(); // "main.cpp"
+        external_linkage::print_Example(); // UB: По идее должен вывести: "Declaration_Definition.cpp", но выведет "main.cpp"
         std::cout << std::endl;
         
         declaration_definition::print();
