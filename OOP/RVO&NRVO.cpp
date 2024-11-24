@@ -13,7 +13,7 @@ public:
     A(int number) { std::cout << "constructor int" << std::endl; }
     explicit A(double number) { std::cout << "constructor doule" << std::endl; }
     A(const A&) { std::cout << "copy constructor" << std::endl; }
-    A(A&&) { std::cout << "move constructor" << std::endl; }
+    A(A&&) noexcept { std::cout << "move constructor" << std::endl; }
     ~A() { std::cout << "destructor" << std::endl; }
 };
 

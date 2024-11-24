@@ -40,9 +40,9 @@ namespace POD
             T3() = default;
             ~T3() = default;
             T3(const T3&) = default;
-            T3(T3&&) = default;
+            T3(T3&&) noexcept = default;
             T3& operator=(const T3&) = default;
-            T3& operator=(T3&&) = default;
+            T3& operator=(T3&&) noexcept = default;
         };
 
         class T4
@@ -99,9 +99,9 @@ namespace POD
             S3() = default;
             ~S3() = default;
             S3(const S3&) = default;
-            S3(S3&&) = default;
+            S3(S3&&) noexcept = default;
             S3& operator=(const S3&) = default;
-            S3& operator=(S3&&) = default;
+            S3& operator=(S3&&) noexcept = default;
         };
 
         class S4
