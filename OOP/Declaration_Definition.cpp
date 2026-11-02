@@ -1,47 +1,31 @@
 #include "Declaration_Definition.hpp"
 
-#include <iostream>
-
 
 namespace internal_linkage
 {
-    void print()
-    {
-        std::cout << "static number1: " << &number1 << std::endl;
-        std::cout << "const number2: " << &number2 << std::endl;
-        std::cout << "constexpr number3: " << &number3 << std::endl;
-    }
-
     namespace
     {
-        // В main.cpp есть такая стуктура с таким же названием
-        struct Example
-        {
-            // В main.cpp есть static method с таким же названием
-            static void print()
-            {
-                std::cout << "Declaration_Definition.cpp" << std::endl;
-            }
-        };
+        [[maybe_unused]] int number = 10; // В main.cpp есть такая же переменная с таким же названием
     }
-
-    void print_Example()
+    
+    namespace print
     {
-        Example::print(); // UB: По идее должен вывести: "Declaration_Definition.cpp", но выведет "main.cpp"
+        int& Number1() { return number1; }
+        const int& Number2() { return number2; }
+        const int& Number3() { return number3; }
+        const int& Number4() { return number4; }
+        const int& Number5() { return number5; }
+        int& Number6() { return number6; }
+        ptr Static_Function() { return &static_function; }
     }
 }
 
 namespace external_linkage
 {
     int number1 = 10;
-    void print()
-    {
-        std::cout << "extern number1: " << &number1 << std::endl;
-        std::cout << "inline number2: " << &number2 << std::endl;
-    }
 
     // В main.cpp есть такая стуктура с таким же названием
-    struct Example1
+    struct Example
     {
         // В main.cpp есть static method с таким же названием
         static void print()
@@ -50,23 +34,31 @@ namespace external_linkage
         }
     };
 
-    void print_Example()
+    void Print_Example()
     {
-        Example1::print(); // UB: По идее должен вывести: "Declaration_Definition.cpp", но выведет "main.cpp"
+        Example::print(); // UB: По идее должен вывести: "Declaration_Definition.cpp", но выведет "main.cpp"
     }
 
     int Example2::number1 = 1;
     const int Example2::number2 = 1;
+
+    namespace print
+    {
+        int& Number1() { return number1; }
+        const int& Number2() { return number2; }
+        const int& Number3() { return number3; }
+        ptr Static_Function() { return &Example2::static_function; }
+    }
 }
 
 namespace declaration_definition // Определение
 {
-    void print()
+    void Print()
     {
         std::cout << "Hello World!" << std::endl;
     }
 
-    inline void print_number() // в каждой единице трансляции (.cpp) должен быть свой inline
+    inline void Print_number() // Нарушение ODR (UB): результат не определён, в каждой единице трансляции (.cpp) функция должна быть объявлена одинаково и должно быть ровно одно определение.
     {
         std::cout << "number" << std::endl;
     }

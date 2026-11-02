@@ -36,52 +36,42 @@
  */
 
 /*
- Внутреннее связывание/компоновка/линковка (internal linkage) - использование функции/переменной в ОДНОЙ единице трансляции (.cpp, включающий содержимое всех .h). При объявлении символа с внутренним связыванием в заголовочном файле (.hpp), каждая единица трансляции (.cpp), включающая в себя этот файл, получит копию этого символа - это плохо, т.к. расход памяти для больших объектов может быть очень высок из-за копирования под каждую единицу трансляции при формирования промежуточных объектных файлов (.o - Linux/.obj - Windows).
-   Пример:
-   - const переменная
-   - constexpr переменная, имеет свойства const
-   - static
-   - безымянный namespace
+Внутреннее связывание/компоновка/линковка (internal linkage) - использование функции/переменной в ОДНОЙ единице трансляции (.cpp, включающий содержимое всех .h). При объявлении символа с внутренним связыванием в заголовочном файле (.hpp), каждая единица трансляции (.cpp), включающая в себя этот файл, получит копию этого символа - это плохо, т.к. расход памяти для больших объектов может быть очень высок из-за копирования под каждую единицу трансляции при формирования промежуточных объектных файлов (.o - Linux/.obj - Windows).
+Примеры:
+- const переменная. Исключения: extern const, inline const - имеют внешнее связывание (external linkage)
+- constexpr переменная (имеет свойства const)
+- static переменная/функция
+- безымянный namespace (все элементы находящиеся внутри, даже external linkage, получают internal linkage)
  */
 namespace internal_linkage
 {
-    void print_Example();
-
     namespace
     {
-        // В Declaration_Definition.cpp есть static method с таким же названием
-        struct Example1
-        {
-            // В Declaration_Definition.cpp есть static method с таким же названием
-            static void print()
-            {
-                std::cout << "main.cpp" << std::endl;
-            }
-        };
+        int number = 10;
     }
 }
 
 /*
- Внешнее связывание/комповнока/линковка (external linkage) - использование функции/переменной в разных единицах трансляции (.cpp, включающий содержимое всех .h).
-   Пример:
-   - extern
-   - inline переменная/функция
-   - Non-const глобальная переменная
-   - функция
-   - constexpr функция, имеет свойства inline
-   - шаблоны
-   - классы/структуры
-   - именновынные namespace
+Внешнее связывание/комповнока/линковка (external linkage) - использование функции/переменной в разных единицах трансляции (.cpp, включающий содержимое всех .h).
+Примеры:
+- extern
+- inline переменная/функция
+- Non-const глобальная переменная
+- функция
+- constexpr функция, имеет свойства inline
+- шаблоны
+- классы/структуры
+- именновынные namespace
  */
 namespace external_linkage
 {
-    void print_Example();
+    void Print_Example();
 
-    // В Declaration_Definition.cpp есть static method с таким же названием
+    // В Declaration_Definition.cpp есть такая же структура с таким же названием
     struct Example
     {
         // В Declaration_Definition.cpp есть static method с таким же названием
-        static void print()
+        static void Print()
         {
             std::cout << "main.cpp" << std::endl;
         }
@@ -90,9 +80,9 @@ namespace external_linkage
 
 namespace declaration_definition // Объявление
 {
-    void print(); // без объявления нельзя будет вызвать функцию
+    void Print(); // без объявления нельзя будет вызвать функцию
 
-    inline void print_number() // в каждой единице трансляции (.cpp) должен быть свой inline
+    inline void Print_number() // Нарушение ODR (UB): результат не определён, в каждой единице трансляции (.cpp) функция должна быть объявлена одинаково и должно быть ровно одно определение.
     {
         std::cout << "number" << std::endl;
     }
@@ -161,24 +151,43 @@ int main()
      */
     {
         std::cout << "internal linkage" << std::endl;
-        std::cout << "static number1: " << &internal_linkage::number1 << std::endl;
-        std::cout << "const number2: " << &internal_linkage::number2 << std::endl;
-        std::cout << "constexpr number3: " << &internal_linkage::number3 << std::endl;
-        internal_linkage::print();
-        internal_linkage::Example1::print(); // "main.cpp"
-        internal_linkage::print_Example(); // "Declaration_Definition.cpp"
+        std::cout << "main, different addresses" << std::endl;
+        std::cout << "static number1, address: " << &internal_linkage::number1 << std::endl;
+        std::cout << "const number2, address: " << &internal_linkage::number2 << std::endl;
+        std::cout << "constexpr number3, address: " << &internal_linkage::number3 << std::endl;
+        std::cout << "static const number4, address: " << &internal_linkage::number4 << std::endl;
+        std::cout << "static constexpr number5, address: " << &internal_linkage::number5 << std::endl;
+        std::cout << "static function, address: " << &internal_linkage::static_function << std::endl;
+        printf("static function, address: %p\n", &internal_linkage::static_function); // std::cout выведет: 1
+        std::cout << "--------------------" << std::endl;
+        std::cout << "Declaration_Definition, different addresses" << std::endl;
+        std::cout << "static number1, address: " << &internal_linkage::print::Number1() << std::endl;
+        std::cout << "const number2, address: " << &internal_linkage::print::Number2() << std::endl;
+        std::cout << "constexpr number3, address: " << &internal_linkage::print::Number3() << std::endl;
+        std::cout << "static const number4, address: " << &internal_linkage::print::Number4() << std::endl;
+        std::cout << "static constexpr number5, address: " << &internal_linkage::print::Number5() << std::endl;
+        std::cout << "static inline number6: " << &internal_linkage::print::Number6() << std::endl;
+        printf("static function, address: %p\n", internal_linkage::print::Static_Function()); // std::cout выведет: 1
         std::cout << std::endl;
         
         std::cout << "external linkage" << std::endl;
+        std::cout << "main, identical addresses" << std::endl;
         std::cout << "extern number1: " << &external_linkage::number1 << std::endl;
         std::cout << "inline number2: " << &external_linkage::number2 << std::endl;
-        external_linkage::print();
-        external_linkage::Example::print(); // "main.cpp"
-        external_linkage::print_Example(); // UB: По идее должен вывести: "Declaration_Definition.cpp", но выведет "main.cpp"
+        std::cout << "inline constexpr number3: " << &external_linkage::number3 << std::endl;
+        printf("static function, address: %p\n", &external_linkage::Example2::static_function); // std::cout выведет: 1
+        std::cout << "--------------------" << std::endl;
+        std::cout << "Declaration_Definition, identical addresses" << std::endl;
+        std::cout << "extern number1: " << &external_linkage::print::Number1() << std::endl;
+        std::cout << "inline number2: " << &external_linkage::print::Number2() << std::endl;
+        std::cout << "inline constexpr number3: " << &external_linkage::print::Number3() << std::endl;
+        printf("static function, address: %p\n", external_linkage::print::Static_Function()); // std::cout выведет: 1
+        external_linkage::Example::Print(); // "main.cpp"
+        external_linkage::Print_Example(); // UB: По идее должен вывести: "Declaration_Definition.cpp", но выведет "main.cpp"
         std::cout << std::endl;
         
-        declaration_definition::print();
-        declaration_definition::print_number();
+        declaration_definition::Print();
+        declaration_definition::Print_number();
     }
     // virtual
     {
@@ -285,9 +294,9 @@ int main()
             auto widget1 = Widget1();
             auto widget2 = Widget2();
             auto widget3 = Widget3();
-            widget1.i; // i == 0
-            widget2.i; // i == UB
-            widget3.i; // i == UB
+            (void)widget1.i; // i == 0
+            (void)widget2.i; // i == UB
+            (void)widget3.i; // i == UB
         }
         /*
          8) Универсальная инициализация (инициализация списком) (C++11) - это инициализация с использованием braced-init-list - std::initializer_list, бывает двух типов: прямая и копирования.
@@ -318,9 +327,9 @@ int main()
                 };
                 
                 Widget1 widget1{}; // вызовется конструктор по умолчанию
-                widget1.i; // i == UB
+                (void)widget1.i; // i == UB
                 Widget2 widget2{}; // вызовется конструктор по умолчанию
-                widget2.i; // i == 0
+                (void)widget2.i; // i == 0
             }
         }
         /*
